@@ -1,4 +1,3 @@
----
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
@@ -16,11 +15,8 @@ spec:
   values:
     app:
       args:
-      - --in-memory
+      - -m
       - -z
       - GCP2
       - -r
       - Central
-      image:
-        repository: ghcr.io/retaildevcrews/ngsa-app
-        tag: beta-0.3.0-0321-0605-24
