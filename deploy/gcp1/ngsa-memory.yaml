@@ -17,6 +17,6 @@ spec:
       args:
       - --in-memory
       - -z
-      - GCP1
+      - GCP01
       - -r
       - Central
