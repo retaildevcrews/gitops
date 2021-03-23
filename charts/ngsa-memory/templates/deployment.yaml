@@ -15,6 +15,8 @@ spec:
     metadata:
     {{- with .Values.podAnnotations }}
       annotations:
+        fluxcd.io/automated: "true"
+        filter.fluxcd.io/app: glob:beta-*
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
@@ -26,6 +28,7 @@ spec:
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
           args:
+            - --in-memory
             {{- range .Values.app.args }}
               - {{ . }}
             {{- end }}

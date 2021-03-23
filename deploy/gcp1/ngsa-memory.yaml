@@ -1,12 +1,8 @@
----
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: ngsa-memory
   namespace: ngsa
-  annotations:
-    fluxcd.io/automated: "true"
-    filter.fluxcd.io/app: glob:beta-*
 spec:
   releaseName: ngsa-memory
   chart:
@@ -16,11 +12,7 @@ spec:
   values:
     app:
       args:
-      - --in-memory
       - -z
       - GCP1
       - -r
       - Central
-      image:
-        repository: ghcr.io/retaildevcrews/ngsa-app
-        tag: beta-0.3.0-0321-0605-24
