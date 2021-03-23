@@ -15,7 +15,7 @@ spec:
   values:
     app:
       args:
-      - --in-memory
+      - -m
       - -z
       - GCP01
       - -r
