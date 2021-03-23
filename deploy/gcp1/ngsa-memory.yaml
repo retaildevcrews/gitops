@@ -17,6 +17,6 @@ spec:
       args:
       - -m
       - -z
-      - GCP01
+      - GCP1
       - -r
       - Central
