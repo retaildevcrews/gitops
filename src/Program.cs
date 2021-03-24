@@ -66,12 +66,19 @@ namespace LogApp
             Directory.SetCurrentDirectory(dir);
 
             // todo - check every directory
-            foreach (string target in p.Targets)
+            foreach (string target in new string[] { "azure", "do", "gcp1" })
             {
                 if (!Directory.Exists(target))
                 {
                     Console.WriteLine($"deploy/{target} directory does not exist");
                     return -1;
+                }
+
+                string fn = $"{target}/{p.Name}.yaml";
+
+                if (File.Exists(fn))
+                {
+                    File.Delete(fn);
                 }
             }
 
