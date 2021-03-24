@@ -18,6 +18,6 @@ spec:
       - -m
       - --prometheus
       - -z
-      - gcp-central
+      - {{whodat.Config.Zone}}
       - -r
-      - Central
+      - {{whodat.Config.Region}}

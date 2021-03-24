@@ -1,3 +1,2 @@
-Config:
-  Zone: az-central
-  Region: Central
+zone: az-central
+region: Central

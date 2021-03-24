@@ -1,3 +1,2 @@
-Config:
-  Zone: do-central
-  Region: Central
+zone: do-central
+region: Central

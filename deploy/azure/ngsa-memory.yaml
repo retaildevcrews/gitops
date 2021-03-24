@@ -16,7 +16,8 @@ spec:
     app:
       args:
       - -m
+      - --prometheus
       - -z
-      - GCP2
+      - az-central
       - -r
       - Central
