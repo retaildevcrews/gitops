@@ -82,25 +82,28 @@ namespace LogApp
                 }
             }
 
-            Config config;
-            text = File.ReadAllText($"../../gitops.yaml");
-
-            foreach (string target in p.Targets)
+            if (p.Targets != null && p.Targets.Count > 0)
             {
-                string fn = $"{target}/{p.Name}.yaml";
-                string cfg = File.ReadAllText($"{target}/config.dat");
+                Config config;
+                text = File.ReadAllText($"../../gitops.yaml");
 
-                config = yaml.Deserialize<Config>(cfg);
-
-                if (File.Exists(fn))
+                foreach (string target in p.Targets)
                 {
-                    File.Delete(fn);
-                }
+                    string fn = $"{target}/{p.Name}.yaml";
+                    string cfg = File.ReadAllText($"{target}/config.dat");
 
-                string s = text.Replace("{{gitops.Config.Region}}", config.Region)
+                    config = yaml.Deserialize<Config>(cfg);
+
+                    if (File.Exists(fn))
+                    {
+                        File.Delete(fn);
+                    }
+
+                    string s = text.Replace("{{gitops.Config.Region}}", config.Region)
                     .Replace("{{gitops.Config.Zone}}", config.Zone);
 
-                File.WriteAllText(fn, s);
+                    File.WriteAllText(fn, s);
+                }
             }
 
             return 0;
