@@ -1,0 +1,23 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: ngsa-memory
+  namespace: ngsa
+  annotations:
+    fluxcd.io/automated: "true"
+    filter.fluxcd.io/app: glob:beta-*
+spec:
+  releaseName: ngsa-memory
+  chart:
+    git: git@github.com:retaildevcrews/bartr-test
+    path: charts/ngsa-memory
+    ref: main
+  values:
+    app:
+      args:
+      - -m
+      - --prometheus
+      - -z
+      - gcp-central
+      - -r
+      - Central
