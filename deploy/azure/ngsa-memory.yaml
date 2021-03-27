@@ -3,11 +3,6 @@ kind: Deployment
 metadata:
   name: ngsa-memory
   namespace: ngsa
-  annotations:
-    fluxcd.io/automated: "true"
-    filter.fluxcd.io/app: glob:beta-*
-  labels:
-    app.kubernetes.io/component: app
 spec:
   replicas: 1
   selector:
@@ -16,9 +11,8 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: app
+        app: ngsa-memory
     spec:
-      nodeSelector:
       containers:
         - name: app
           image: ghcr.io/retaildevcrews/ngsa-app:beta-0.3.0-0321-0605-24
