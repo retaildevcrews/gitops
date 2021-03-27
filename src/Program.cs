@@ -31,7 +31,7 @@ namespace LogApp
         /// <returns>0 on success</returns>
         public static int Main(string[] args)
         {
-            string file = "../who.dat";
+            string file = "../gitops.dat";
 
             if (!File.Exists(file))
             {
@@ -39,7 +39,7 @@ namespace LogApp
 
                 if (!File.Exists(file))
                 {
-                    Console.WriteLine("who.dat file not found");
+                    Console.WriteLine("gitops.dat file not found");
                     return -1;
                 }
             }
@@ -66,7 +66,7 @@ namespace LogApp
             Directory.SetCurrentDirectory(dir);
 
             // todo - check every directory
-            foreach (string target in new string[] { "azure", "do", "gcp1" })
+            foreach (string target in new string[] { "azure", "do", "gcp" })
             {
                 if (!Directory.Exists(target))
                 {
@@ -83,7 +83,7 @@ namespace LogApp
             }
 
             Config config;
-            text = File.ReadAllText($"../../who.yaml");
+            text = File.ReadAllText($"../../gitops.yaml");
 
             foreach (string target in p.Targets)
             {
@@ -97,8 +97,8 @@ namespace LogApp
                     File.Delete(fn);
                 }
 
-                string s = text.Replace("{{whodat.Config.Region}}", config.Region)
-                    .Replace("{{whodat.Config.Zone}}", config.Zone);
+                string s = text.Replace("{{gitops.Config.Region}}", config.Region)
+                    .Replace("{{gitops.Config.Zone}}", config.Zone);
 
                 File.WriteAllText(fn, s);
             }
