@@ -35,11 +35,11 @@ spec:
           - name: secrets
             mountPath: "/app/secrets"
 
-        volumes:
-        - name: secrets
-          secret:
-            secretName: ngsa-secrets
-            defaultMode: 444
+      volumes:
+      - name: secrets
+        secret:
+          secretName: ngsa-secrets
+          defaultMode: 444
 
 ---
 apiVersion: v1
