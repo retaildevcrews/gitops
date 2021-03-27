@@ -18,6 +18,6 @@ spec:
       - -m
       - --prometheus
       - -z
-      - az-central
+      - do-central
       - -r
       - Central
