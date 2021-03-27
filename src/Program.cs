@@ -100,7 +100,11 @@ namespace LogApp
                     }
 
                     string s = text.Replace("{{gitops.Config.Region}}", config.Region)
-                    .Replace("{{gitops.Config.Zone}}", config.Zone);
+                    .Replace("{{gitops.Config.Zone}}", config.Zone)
+                    .Replace("{{gitops.Name}}", p.Name)
+                    .Replace("{{gitops.Namespace}}", p.Namespace)
+                    .Replace("{{gitops.Imagename}}", p.Imagename)
+                    .Replace("{{gitops.Imagetag}}", p.Imagetag);
 
                     File.WriteAllText(fn, s);
                 }
@@ -118,8 +122,10 @@ namespace LogApp
 
     public class AppConfig
     {
-        public string Owner { get; set; }
         public string Name { get; set; }
+        public string Namespace { get; set; }
+        public string Imagename { get; set; }
+        public string Imagetag { get; set; }
         public List<string> Targets { get; set; } = new List<string>();
     }
 }
