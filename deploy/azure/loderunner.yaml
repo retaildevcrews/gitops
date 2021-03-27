@@ -27,9 +27,9 @@ spec:
           - -f
           - benchmark.json
           - --prometheus
-          - -z
+          - --zone
           - az-central
-          - -r
+          - --region
           - Central
 
           ports:
