@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        semver: 0328-0031
+        semver: 0328-0211
     spec:
       containers:
         - name: app
@@ -23,7 +23,7 @@ spec:
           - -m
           - --prometheus
           - -z
-          - az-central
+          - do-central
           - -r
           - Central
 
@@ -33,7 +33,6 @@ spec:
               protocol: TCP
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
