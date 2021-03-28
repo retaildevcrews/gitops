@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0328-0544
+        version: beta-0328-0648
     spec:
       containers:
         - name: app
@@ -29,9 +29,9 @@ spec:
           - benchmark.json
           - --prometheus
           - --zone
-          - do-central
+          - do-sfo3
           - --region
-          - Central
+          - West
 
           ports:
             - name: http
