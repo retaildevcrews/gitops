@@ -52,10 +52,15 @@ spec:
             memory: "1Gi"
             cpu: "500m"
         volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-storage
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-datasources
             readOnly: false
       volumes:
+        - name: grafana-storage
+          hostPath:
+            path: /grafana
         - name: grafana-datasources
           configMap:
               defaultMode: 420
