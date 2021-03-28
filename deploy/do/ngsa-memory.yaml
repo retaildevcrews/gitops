@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngsa-memory
+  namespace: ngsa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngsa-memory
+  template:
+    metadata:
+      labels:
+        app: ngsa-memory
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/retaildevcrews/ngsa-app:beta-0.3.0-0321-0605-24
+          imagePullPolicy: Always
+
+          args: 
+          - -m
+          - --prometheus
+          - -z
+          - do-central
+          - -r
+          - Central
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngsa-memory
+  namespace: ngsa
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: ngsa-memory
