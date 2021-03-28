@@ -21,10 +21,11 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
+        semver: 0328-0031
     spec:
       containers:
         - name: app
-          image: ghcr.io/retaildevcrews/ngsa-app:beta-0.3.0-0321-0605-24
+          image: ghcr.io/retaildevcrews/ngsa-app:beta
           imagePullPolicy: Always
 
           args: 
