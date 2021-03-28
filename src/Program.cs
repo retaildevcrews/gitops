@@ -126,6 +126,7 @@ namespace LogApp
                     .Replace("{{gitops.Namespace}}", p.Namespace)
                     .Replace("{{gitops.Imagename}}", p.Imagename)
                     .Replace("{{gitops.Imagetag}}", p.Imagetag)
+                    .Replace("{{gitops.Version}}", semver)
                     .Replace("{{gitops.Semver}}", semver);
 
                     File.WriteAllText(fn, s);
