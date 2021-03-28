@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0328-0252
+        version: beta-0328-0544
     spec:
       containers:
         - name: app
