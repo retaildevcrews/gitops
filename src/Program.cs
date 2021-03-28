@@ -25,7 +25,15 @@ namespace LogApp
     public sealed partial class App
     {
         private static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().WithNamingConvention(UnderscoredNamingConvention.Instance).Build();
-        private static AppConfig appConfig = null;
+        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            AllowTrailingCommas = true,
+            IgnoreNullValues = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        };
+        private static Dictionary<string, object> appConfig = null;
 
         /// <summary>
         /// Main entry point
@@ -55,10 +63,10 @@ namespace LogApp
             return 0;
         }
 
-        // read AppConfig from gitops.dat
-        private static AppConfig ReadAppConfig()
+        // read AppConfig from gitops.json
+        private static Dictionary<string, object> ReadAppConfig()
         {
-            string file = "../gitops.dat";
+            string file = "../gitops.json";
 
             if (!File.Exists(file))
             {
@@ -67,19 +75,19 @@ namespace LogApp
 
                 if (!File.Exists(file))
                 {
-                    Console.WriteLine("gitops.dat file not found");
+                    Console.WriteLine("gitops.json file not found");
                     return null;
                 }
             }
 
             try
             {
-                // deserialze the yaml
-                return YamlDeserializer.Deserialize<AppConfig>(File.ReadAllText(file));
+                // deserialze the json
+                return JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(file), JsonOptions);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception reading gitops.dat: {ex.Message}");
+                Console.WriteLine($"Exception reading gitops.json: {ex.Message}");
                 return null;
             }
         }
@@ -107,11 +115,11 @@ namespace LogApp
             // delete all deployment files
             foreach (string target in Directory.EnumerateDirectories("."))
             {
-                string fn = $"{target}/{appConfig.Namespace}";
+                string fn = $"{target}/{appConfig["namespace"]}";
 
                 if (Directory.Exists(fn))
                 {
-                    fn = $"{target}/{appConfig.Namespace}/{appConfig.Name}.yaml";
+                    fn = $"{target}/{appConfig["namespace"]}/{appConfig["name"]}.yaml";
 
                     if (File.Exists(fn))
                     {
@@ -126,48 +134,83 @@ namespace LogApp
         {
             try
             {
-                if (appConfig.Targets != null && appConfig.Targets.Count > 0)
+                if (appConfig.ContainsKey("targets"))
                 {
-                    // todo - get this from docker build
-                    string version = DateTime.UtcNow.ToString("MMdd-HHmm");
+                    string t = ((JsonElement)appConfig["targets"]).GetRawText();
+                    List<string> targets = JsonSerializer.Deserialize<List<string>>(t);
 
-                    Config config;
-                    string text = File.ReadAllText($"../../gitops.yaml");
-
-                    foreach (string target in appConfig.Targets)
+                    if (targets.Count > 0)
                     {
-                        // create the directory (by namespace)
-                        string fn = $"{target}/{appConfig.Namespace}";
-                        if (!Directory.Exists(fn))
+                        // todo - get this from docker build
+                        appConfig.Add("version", DateTime.UtcNow.ToString("MMdd-HHmm"));
+                        appConfig.Add("deploy", DateTime.UtcNow.ToString("yy-MM-dd-HH-mm-ss"));
+
+                        Dictionary<string, object> config;
+                        string text = File.ReadAllText($"../../gitops.yaml");
+
+                        foreach (string target in targets)
                         {
-                            Directory.CreateDirectory(fn);
+                            // create the directory (by namespace)
+                            string fn = $"{target}/{appConfig["namespace"]}";
+                            if (!Directory.Exists(fn))
+                            {
+                                Directory.CreateDirectory(fn);
+                            }
+
+                            // create namespace.yaml
+                            fn = $"{fn}/namespace.yaml";
+                            if (!File.Exists(fn))
+                            {
+                                File.WriteAllText(fn, $"apiVersion: v1\nkind: Namespace\nmetadata:\n  labels:\n    name: {appConfig["namespace"]}\n  name: {appConfig["namespace"]}\n");
+                            }
+
+                            string cfg = File.ReadAllText($"{target}/config.json");
+                            config = JsonSerializer.Deserialize<Dictionary<string, object>>(cfg, JsonOptions);
+
+                            fn = $"{target}/{appConfig["namespace"]}/{appConfig["name"]}.yaml";
+                            if (File.Exists(fn))
+                            {
+                                File.Delete(fn);
+                            }
+
+                            foreach (var kv in appConfig)
+                            {
+                                text = text.Replace("{{gitops." + kv.Key + "}}", kv.Value.ToString())
+                                    .Replace("{{ gitops." + kv.Key + " }}", kv.Value.ToString());
+                            }
+
+                            foreach (var kv in config)
+                            {
+                                text = text.Replace("{{gitops.config." + kv.Key + "}}", kv.Value.ToString())
+                                    .Replace("{{ gitops.config." + kv.Key + " }}", kv.Value.ToString());
+                            }
+
+                            // check the yaml
+                            string[] lines = text.Split('\n');
+                            bool err = false;
+
+                            foreach (string line in lines)
+                            {
+                                if (line.Contains("{{gitops.") || line.Contains("{{ gitops."))
+                                {
+                                    if (!err)
+                                    {
+                                        Console.WriteLine("Error in gitops.yaml");
+                                    }
+
+                                    err = true;
+
+                                    Console.WriteLine(line);
+                                }
+                            }
+
+                            if (err)
+                            {
+                                return false;
+                            }
+
+                            File.WriteAllText(fn, text);
                         }
-
-                        // create namespace.yaml
-                        fn = $"{fn}/namespace.yaml";
-                        if (!File.Exists(fn))
-                        {
-                            File.WriteAllText(fn, $"apiVersion: v1\nkind: Namespace\nmetadata:\n  labels:\n    name: {appConfig.Namespace}\n  name: {appConfig.Namespace}\n");
-                        }
-
-                        string cfg = File.ReadAllText($"{target}/config.dat");
-                        config = YamlDeserializer.Deserialize<Config>(cfg);
-
-                        fn = $"{target}/{appConfig.Namespace}/{appConfig.Name}.yaml";
-                        if (File.Exists(fn))
-                        {
-                            File.Delete(fn);
-                        }
-
-                        string s = text.Replace("{{gitops.Config.Region}}", config.Region)
-                    .Replace("{{gitops.Config.Zone}}", config.Zone)
-                    .Replace("{{gitops.Name}}", appConfig.Name)
-                    .Replace("{{gitops.Namespace}}", appConfig.Namespace)
-                    .Replace("{{gitops.Imagename}}", appConfig.Imagename)
-                    .Replace("{{gitops.Imagetag}}", appConfig.Imagetag)
-                    .Replace("{{gitops.Version}}", version);
-
-                        File.WriteAllText(fn, s);
                     }
                 }
 
@@ -176,8 +219,9 @@ namespace LogApp
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception creating deployments: {ex.Message}");
-                return false;
             }
+
+            return false;
         }
     }
 }
