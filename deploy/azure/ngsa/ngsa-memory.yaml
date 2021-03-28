@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0328-0711
+        version: beta-0328-0733
     spec:
       containers:
         - name: app
@@ -20,11 +20,11 @@ spec:
           imagePullPolicy: Always
 
           args: 
-          - -m
+          - --in-memory
           - --prometheus
-          - -z
+          - --zone
           - az-central
-          - -r
+          - --region
           - Central
 
           ports:
