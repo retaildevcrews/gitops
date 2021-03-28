@@ -196,6 +196,7 @@ namespace LogApp
             Dictionary<string, object> config;
             string fileName;
             string yaml;
+            string[] lines;
 
             try
             {
@@ -244,7 +245,7 @@ namespace LogApp
                         }
 
                         // check the yaml
-                        string[] lines = yaml.Split('\n');
+                        lines = yaml.Split('\n');
                         bool err = false;
 
                         foreach (string line in lines)
