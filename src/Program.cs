@@ -74,11 +74,16 @@ namespace LogApp
                     return -1;
                 }
 
-                string fn = $"{target}/{p.Name}.yaml";
+                string fn = $"{target}/{p.Namespace}";
 
-                if (File.Exists(fn))
+                if (Directory.Exists(fn))
                 {
-                    File.Delete(fn);
+                    fn = $"{target}/{p.Namespace}/{p.Name}.yaml";
+
+                    if (File.Exists(fn))
+                    {
+//                        File.Delete(fn);
+                    }
                 }
             }
 
@@ -92,11 +97,24 @@ namespace LogApp
 
                 foreach (string target in p.Targets)
                 {
-                    string fn = $"{target}/{p.Name}.yaml";
-                    string cfg = File.ReadAllText($"{target}/config.dat");
+                    // create the directory (by namespace)
+                    string fn = $"{target}/{p.Namespace}";
+                    if (!Directory.Exists(fn))
+                    {
+                        Directory.CreateDirectory(fn);
+                    }
 
+                    // create namespace.yaml
+                    fn = $"{fn}/namespace.yaml";
+                    if (!File.Exists(fn))
+                    {
+                        File.WriteAllText(fn, $"apiVersion: v1\nkind: Namespace\nmetadata:\n  labels:\n    name: {p.Namespace}\n  name: {p.Namespace}\n");
+                    }
+
+                    string cfg = File.ReadAllText($"{target}/config.dat");
                     config = yaml.Deserialize<Config>(cfg);
 
+                    fn = $"{target}/{p.Namespace}/{p.Name}.yaml";
                     if (File.Exists(fn))
                     {
                         File.Delete(fn);
