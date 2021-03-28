@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: loderunner
+        version: beta-0328-0225
     spec:
       containers:
         - name: app
@@ -28,7 +29,7 @@ spec:
           - benchmark.json
           - --prometheus
           - --zone
-          - az-central
+          - do-central
           - --region
           - Central
 
@@ -38,6 +39,7 @@ spec:
               protocol: TCP
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -52,3 +54,22 @@ spec:
       name: http
   selector:
     app: loderunner
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: loderunner-np
+  namespace: ngsa
+  labels:
+    app: loderunner
+
+spec:
+  type: NodePort
+  selector:
+    app: loderunner
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32080
