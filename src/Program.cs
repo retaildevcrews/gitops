@@ -84,6 +84,9 @@ namespace LogApp
 
             if (p.Targets != null && p.Targets.Count > 0)
             {
+                // todo - get this from docker build
+                string semver = DateTime.UtcNow.ToString("MMdd-HHmm");
+
                 Config config;
                 text = File.ReadAllText($"../../gitops.yaml");
 
@@ -104,7 +107,8 @@ namespace LogApp
                     .Replace("{{gitops.Name}}", p.Name)
                     .Replace("{{gitops.Namespace}}", p.Namespace)
                     .Replace("{{gitops.Imagename}}", p.Imagename)
-                    .Replace("{{gitops.Imagetag}}", p.Imagetag);
+                    .Replace("{{gitops.Imagetag}}", p.Imagetag)
+                    .Replace("{{gitops.Semver}}", semver);
 
                     File.WriteAllText(fn, s);
                 }
