@@ -23,7 +23,7 @@ spec:
           - -m
           - --prometheus
           - -z
-          - gcp-central
+          - az-central
           - -r
           - Central
 
@@ -33,6 +33,7 @@ spec:
               protocol: TCP
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:

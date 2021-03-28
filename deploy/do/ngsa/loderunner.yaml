@@ -28,7 +28,7 @@ spec:
           - benchmark.json
           - --prometheus
           - --zone
-          - do-central
+          - az-central
           - --region
           - Central
 
