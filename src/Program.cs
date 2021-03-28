@@ -11,11 +11,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using YamlDotNet;
-using YamlDotNet.Core;
-using YamlDotNet.Helpers;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace LogApp
 {
@@ -24,7 +19,6 @@ namespace LogApp
     /// </summary>
     public sealed partial class App
     {
-        private static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().WithNamingConvention(UnderscoredNamingConvention.Instance).Build();
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
@@ -34,7 +28,9 @@ namespace LogApp
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
         };
+        private static readonly DateTime Now = DateTime.UtcNow;
         private static Dictionary<string, object> appConfig = null;
+        private static string containerVersion = DateTime.UtcNow.ToString("MMdd-HHmm");
 
         /// <summary>
         /// Main entry point
@@ -43,6 +39,11 @@ namespace LogApp
         /// <returns>0 on success</returns>
         public static int Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                containerVersion = args[0].Trim();
+            }
+
             appConfig = ReadAppConfig();
 
             // read config and set working directory to /deploy
@@ -137,14 +138,15 @@ namespace LogApp
             {
                 if (appConfig.ContainsKey("targets"))
                 {
-                    string t = ((JsonElement)appConfig["targets"]).GetRawText();
-                    List<string> targets = JsonSerializer.Deserialize<List<string>>(t);
+                    // extract and remove the targets
+                    List<string> targets = JsonSerializer.Deserialize<List<string>>(((JsonElement)appConfig["targets"]).GetRawText());
+                    appConfig.Remove("targets");
 
                     if (targets.Count > 0)
                     {
                         // todo - get this from docker build
-                        appConfig.Add("version", DateTime.UtcNow.ToString("MMdd-HHmm"));
-                        appConfig.Add("deploy", DateTime.UtcNow.ToString("yy-MM-dd-HH-mm-ss"));
+                        appConfig.Add("version", containerVersion);
+                        appConfig.Add("deploy", Now.ToString("yy-MM-dd-HH-mm-ss"));
 
                         Dictionary<string, object> config;
                         string text = File.ReadAllText($"../../gitops.yaml");
@@ -174,22 +176,22 @@ namespace LogApp
                                 File.Delete(fn);
                             }
 
-                            string s = text;
+                            string yaml = text;
 
                             foreach (var kv in appConfig)
                             {
-                                s = s.Replace("{{gitops." + kv.Key + "}}", kv.Value.ToString())
+                                yaml = yaml.Replace("{{gitops." + kv.Key + "}}", kv.Value.ToString())
                                     .Replace("{{ gitops." + kv.Key + " }}", kv.Value.ToString());
                             }
 
                             foreach (var kv in config)
                             {
-                                s = s.Replace("{{gitops.config." + kv.Key + "}}", kv.Value.ToString())
+                                yaml = yaml.Replace("{{gitops.config." + kv.Key + "}}", kv.Value.ToString())
                                     .Replace("{{ gitops.config." + kv.Key + " }}", kv.Value.ToString());
                             }
 
                             // check the yaml
-                            string[] lines = s.Split('\n');
+                            string[] lines = yaml.Split('\n');
                             bool err = false;
 
                             foreach (string line in lines)
@@ -212,7 +214,7 @@ namespace LogApp
                                 return false;
                             }
 
-                            File.WriteAllText(fn, s);
+                            File.WriteAllText(fn, yaml);
                         }
                     }
                 }
