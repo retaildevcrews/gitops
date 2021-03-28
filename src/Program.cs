@@ -82,7 +82,7 @@ namespace LogApp
 
                     if (File.Exists(fn))
                     {
-//                        File.Delete(fn);
+                        File.Delete(fn);
                     }
                 }
             }
@@ -126,8 +126,7 @@ namespace LogApp
                     .Replace("{{gitops.Namespace}}", p.Namespace)
                     .Replace("{{gitops.Imagename}}", p.Imagename)
                     .Replace("{{gitops.Imagetag}}", p.Imagetag)
-                    .Replace("{{gitops.Version}}", semver)
-                    .Replace("{{gitops.Semver}}", semver);
+                    .Replace("{{gitops.Version}}", semver);
 
                     File.WriteAllText(fn, s);
                 }
