@@ -28,6 +28,7 @@ namespace LogApp
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
             AllowTrailingCommas = true,
             IgnoreNullValues = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -173,20 +174,22 @@ namespace LogApp
                                 File.Delete(fn);
                             }
 
+                            string s = text;
+
                             foreach (var kv in appConfig)
                             {
-                                text = text.Replace("{{gitops." + kv.Key + "}}", kv.Value.ToString())
+                                s = s.Replace("{{gitops." + kv.Key + "}}", kv.Value.ToString())
                                     .Replace("{{ gitops." + kv.Key + " }}", kv.Value.ToString());
                             }
 
                             foreach (var kv in config)
                             {
-                                text = text.Replace("{{gitops.config." + kv.Key + "}}", kv.Value.ToString())
+                                s = s.Replace("{{gitops.config." + kv.Key + "}}", kv.Value.ToString())
                                     .Replace("{{ gitops.config." + kv.Key + " }}", kv.Value.ToString());
                             }
 
                             // check the yaml
-                            string[] lines = text.Split('\n');
+                            string[] lines = s.Split('\n');
                             bool err = false;
 
                             foreach (string line in lines)
@@ -209,7 +212,7 @@ namespace LogApp
                                 return false;
                             }
 
-                            File.WriteAllText(fn, text);
+                            File.WriteAllText(fn, s);
                         }
                     }
                 }
