@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0328-0541
+        version: beta-0328-0647
     spec:
       containers:
         - name: app
@@ -23,9 +23,9 @@ spec:
           - -m
           - --prometheus
           - -z
-          - do-central
+          - do-sfo3
           - -r
-          - Central
+          - West
 
           ports:
             - name: http
