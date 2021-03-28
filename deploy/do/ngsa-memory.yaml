@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        semver: {{gitops.SemVer}}
+        semver: 0328-0026
     spec:
       containers:
         - name: app
