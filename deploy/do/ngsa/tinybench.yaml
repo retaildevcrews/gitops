@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: tinybench
-        version: beta-0329-0137
-        deploy: 21-03-29-01-37-35
+        version: beta-0329-0141
+        deploy: 21-03-29-01-41-40
     spec:
       containers:
         - name: app
