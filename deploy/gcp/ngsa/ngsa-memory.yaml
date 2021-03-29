@@ -24,7 +24,7 @@ spec:
           - --in-memory
           - --prometheus
           - --zone
-          - az-central
+          - gcp-central
           - --region
           - Central
 
