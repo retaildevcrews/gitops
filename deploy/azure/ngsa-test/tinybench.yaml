@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinybench
+  namespace: ngsa-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tinybench
+  template:
+    metadata:
+      labels:
+        app: tinybench
+        version: beta-0330-2103
+        deploy: 21-03-30-21-03-12
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/retaildevcrews/tinybench:beta
+          imagePullPolicy: Always
+
+          args: 
+          - -p
+          - "8080"
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinybench
+  namespace: ngsa-test
+  labels:
+    app: tinybench
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: tinybench
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinybench-np
+  namespace: ngsa-test
+  labels:
+    app: tinybench
+
+spec:
+  type: NodePort
+  selector:
+    app: tinybench
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001
