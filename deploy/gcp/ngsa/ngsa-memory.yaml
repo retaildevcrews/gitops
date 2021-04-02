@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0402-0557
-        deploy: 21-04-02-05-57-11
+        version: beta-0402-1622
+        deploy: 21-04-02-16-22-42
     spec:
       containers:
         - name: app
