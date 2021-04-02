@@ -1,4 +1,5 @@
 {
     "zone": "do-sfo3",
-    "region": "West"
+    "region": "West",
+    "template": "akdc.yaml"
 }

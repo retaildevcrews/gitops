@@ -1,4 +1,5 @@
 {
     "zone": "az-central",
-    "region": "Central"
+    "region": "Central",
+    "template": "akdc.yaml"
 }
