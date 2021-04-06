@@ -24,9 +24,9 @@ spec:
           - --in-memory
           - --prometheus
           - --zone
-          - do-sfo3
+          - az-central
           - --region
-          - West
+          - Central
 
           ports:
             - name: http
