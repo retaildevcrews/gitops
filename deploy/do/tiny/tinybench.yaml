@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinybench
+  namespace: tiny
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tinybench
+  template:
+    metadata:
+      labels:
+        app: tinybench
+        version: beta-0407-0435
+        deploy: 21-04-07-04-35-15
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/retaildevcrews/tinybench:beta
+          imagePullPolicy: Always
+
+          args: 
+          - -p
+          - "8080"
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinybench
+  namespace: tiny
+  labels:
+    app: tinybench
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: tinybench
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinybench-np
+  namespace: tiny
+  labels:
+    app: tinybench
+
+spec:
+  type: NodePort
+  selector:
+    app: tinybench
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loderunner
+  namespace: tiny
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loderunner
+  template:
+    metadata:
+      labels:
+        app: loderunner
+        version: beta-0407-0435
+        deploy: 21-04-07-04-35-15
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/retaildevcrews/ngsa-lr:beta
+          imagePullPolicy: Always
+
+          args: 
+          - --sleep
+          - "1000"
+          - --run-loop
+          - --server
+          - http://tinybench:8080
+          - --files
+          - tinybench.json
+          - --prometheus
+          - --zone
+          - do-sfo3
+          - --region
+          - West
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: loderunner
+  namespace: tiny
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: loderunner
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: loderunner-np
+  namespace: tiny
+  labels:
+    app: loderunner
+
+spec:
+  type: NodePort
+  selector:
+    app: loderunner
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32080
