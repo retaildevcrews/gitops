@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: tinybench
-        version: beta-0407-0412
-        deploy: 21-04-07-04-12-07
+        version: beta-0407-0427
+        deploy: 21-04-07-04-27-14
     spec:
       containers:
         - name: app
@@ -81,8 +81,8 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0407-0412
-        deploy: 21-04-07-04-12-07
+        version: beta-0407-0427
+        deploy: 21-04-07-04-27-14
     spec:
       containers:
         - name: app
