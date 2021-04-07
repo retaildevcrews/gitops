@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0406-2253
-        deploy: 21-04-06-22-53-17
+        version: beta-0407-0240
+        deploy: 21-04-07-02-40-31
     spec:
       containers:
         - name: app
@@ -67,3 +67,81 @@ spec:
     - port: 8080
       targetPort: 8080
       nodePort: 30080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loderunner
+  namespace: ngsa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loderunner
+  template:
+    metadata:
+      labels:
+        app: loderunner
+        version: beta-0407-0240
+        deploy: 21-04-07-02-40-31
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/retaildevcrews/ngsa-lr:beta
+          imagePullPolicy: Always
+
+          args: 
+          - --sleep
+          - "1000"
+          - --run-loop
+          - --server
+          - http://ngsa-memory:8080
+          - --files
+          - benchmark.json
+          - --prometheus
+          - --zone
+          - do-sfo3
+          - --region
+          - West
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: loderunner
+  namespace: ngsa
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: loderunner
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngsa-memory-np
+  namespace: ngsa
+  labels:
+    app: loderunner
+
+spec:
+  type: NodePort
+  selector:
+    app: loderunner
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32080
