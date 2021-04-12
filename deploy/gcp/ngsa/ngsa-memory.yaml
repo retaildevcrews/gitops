@@ -24,7 +24,7 @@ spec:
           - --in-memory
           - --prometheus
           - --zone
-          - az-central
+          - gcp-central
           - --region
           - Central
 
@@ -101,7 +101,7 @@ spec:
           - benchmark.json
           - --prometheus
           - --zone
-          - az-central
+          - gcp-central
           - --region
           - Central
 
