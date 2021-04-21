@@ -28,6 +28,8 @@ spec:
           args: 
           - --in-memory
           - --prometheus
+          - --url-prefix
+          - /memory
           # For now using dev zones 
           # - --zone
           # - az-central
