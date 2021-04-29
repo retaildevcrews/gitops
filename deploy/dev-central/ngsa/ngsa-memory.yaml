@@ -29,7 +29,7 @@ spec:
           - --in-memory
           - --prometheus
           - --url-prefix
-          - urlprefix
+          - /memory
           # For now using dev zones 
           # - --zone
           # - az-central

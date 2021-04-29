@@ -3,5 +3,5 @@
     "agentpool": "npuser01",
     "host": "bu0001a0008-00.ngsa-monitoring-dev.com",
     "stripprefix": "ngsa-stripprefix@file",
-    "urlprefix": "urlprefix"
+    "urlprefix": "/memory"
 }
