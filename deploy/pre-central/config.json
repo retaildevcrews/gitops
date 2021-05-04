@@ -1,0 +1,5 @@
+{
+    "zone": "az-central",
+    "region": "Central",
+    "template": "pre-prod.yaml"
+}
