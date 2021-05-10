@@ -1,7 +1,9 @@
 {
-    "template": "ngsa-memory.yaml",
+    "template": "ngsa-memory-ocw.yaml",
     "agentpool": "npuser01",
-    "host": "bu0001a0008-00.aks-ingress.contoso.com",
+    "host": "bu0001a0008-00.westcentral.aks-sb.com",
     "stripprefix": "ngsa-stripprefix@file",
-    "urlprefix": "/memory"
+    "urlprefix": "/memory",
+    "region": "westcentralus",
+    "zone": "westcentral"
 }
