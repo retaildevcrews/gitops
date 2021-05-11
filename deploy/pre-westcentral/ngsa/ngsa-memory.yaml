@@ -14,8 +14,8 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0507-1854
-        deploy: 21-05-07-18-54-58
+        version: beta-0511-0157
+        deploy: 21-05-11-01-57-37
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
@@ -30,16 +30,24 @@ spec:
           - --prometheus
           - --url-prefix
           - /memory
-          # For now using dev zones 
-          # - --zone
-          # - az-central
-          # - --region
-          # - Central
+          - --zone
+          - westcentral
+          - --region
+          - westcentralus
 
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+
       # Added Node Selector
       # Since we have two node pools for PnP cluster
       nodeSelector:
@@ -81,14 +89,14 @@ spec:
   # ingressClassName: "traefik-internal"
   tls:
   - hosts:
-      - bu0001a0008-00.aks-ingress.contoso.com
+      - bu0001a0008-00.westcentral.aks-sb.com
         # it is possible to opt for certificate management strategy with dedicated
         # certificates for each TLS SNI route.
         # In this Rereference Implementation for the sake of simplicity we use a
         # wildcard default certificate added at Ingress Controller configuration level which is *.example.com
         # secretName: <bu0001a0008-00-example-com-tls-secret>
   rules:
-  - host: bu0001a0008-00.aks-ingress.contoso.com
+  - host: bu0001a0008-00.westcentral.aks-sb.com
     http:
       paths:
       - path: /memory
