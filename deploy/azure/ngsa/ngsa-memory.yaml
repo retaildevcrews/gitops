@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0511-0157
-        deploy: 21-05-11-01-57-37
+        version: beta-0513-2112
+        deploy: 21-05-13-21-12-18
     spec:
       containers:
         - name: app
@@ -83,8 +83,8 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0511-0157
-        deploy: 21-05-11-01-57-37
+        version: beta-0513-2112
+        deploy: 21-05-13-21-12-18
     spec:
       containers:
         - name: app
