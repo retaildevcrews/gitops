@@ -1,5 +1,0 @@
-{
-    "zone": "gcp-central",
-    "region": "Central",
-    "template": "akdc.yaml"
-}
