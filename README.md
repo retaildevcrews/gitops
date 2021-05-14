@@ -34,3 +34,8 @@ args:
   - /deploy/bartr1/ingress/traefik-config.yaml
 - app specific `traefik` config
   - /deploy/bartr1/ngsa/ngsa-ingress.yaml
+
+### Next Steps
+
+- generate the files in `/deploy/bartr` with `AutoGitOps`
+  - create new templates in the `gitops-memory` repo
