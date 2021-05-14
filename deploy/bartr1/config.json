@@ -1,0 +1,7 @@
+{
+    "template": "ngsa-memory.yaml",
+    "agentpool": "npuser01",
+    "host": "bartr1.aks-sb.com",
+    "stripprefix": "ngsa-stripprefix@file",
+    "urlprefix": "/memory"
+}
