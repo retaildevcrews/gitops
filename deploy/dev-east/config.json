@@ -1,0 +1,9 @@
+{
+    "template": "dev.yaml",
+    "zone": "az-eastus2",
+    "region": "East",
+    "agentpool": "npuser01",
+    "host": "dev.aks-sb.com",
+    "stripprefix": "ngsa-stripprefix@file",
+    "urlprefix": "/memory"
+}
