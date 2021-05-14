@@ -1,9 +1,0 @@
-{
-    "template": "ngsa-memory-ocw.yaml",
-    "agentpool": "npuser01",
-    "host": "bu0001a0008-00.central.aks-sb.com",
-    "stripprefix": "ngsa-stripprefix@file",
-    "urlprefix": "/memory",
-    "region": "centralus",
-    "zone": "central"
-}
