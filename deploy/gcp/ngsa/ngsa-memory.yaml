@@ -12,12 +12,12 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0514-1908
-        deploy: 21-05-14-19-08-36
+        version: beta-0514-1915
+        deploy: 21-05-14-19-15-24
     spec:
       containers:
         - name: app
-          image: ghcr.io/retaildevcrews/ngsa-app:beta
+          image: retaildevcrew/ngsa-app:beta
           imagePullPolicy: Always
 
           args: 
@@ -83,8 +83,8 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0514-1908
-        deploy: 21-05-14-19-08-36
+        version: beta-0514-1915
+        deploy: 21-05-14-19-15-24
     spec:
       containers:
         - name: app
