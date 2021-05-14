@@ -37,5 +37,8 @@ args:
 
 ### Next Steps
 
+- clone this repo
+- clone `retaildevcrews/gitops-memory`
 - generate the files in `/deploy/bartr` with `AutoGitOps`
-  - create new templates in the `gitops-memory` repo
+  - create new templates in your cloned `gitops-memory` repo
+- update GitHub Action in your cloned `gitops-memory` repo
