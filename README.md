@@ -4,7 +4,7 @@
 
 > Kubernetes components deployed via Flux for `AKS Secure Baseline`
 
-This is an incomplete sample of deploying `Azure Secure Baseline` with `AutoGitOps`
+This is an `incomplete sample` of deploying `Azure Secure Baseline` with `AutoGitOps`
 
 - ocw-baseline - baseline components for all clusters
 - deploy/bartr1 - cluster specific deployment files
