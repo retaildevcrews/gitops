@@ -4,9 +4,10 @@
 
 > Kubernetes components deployed via Flux for `AKS Secure Baseline`
 
+This is an incomplete sample of deploying `Azure Secure Baseline` with `AutoGitOps`
+
 - ocw-baseline - baseline components for all clusters
-- deploy/clusterName - cluster specific deployment files
-- cluster-manifests - `deprecated`
+- deploy/bartr1 - cluster specific deployment files
 
 ## Flux Setup
 
@@ -14,8 +15,8 @@
 
 args:
 - --git-url=https://github.com/retaildevcrews/gitops.git
-- --git-branch=gitops                             ### todo - potentially change this
-- --git-path=ocw-baseline,deploy/yourClusterName  ### todo - change this
+- --git-branch=bartr                      ### todo - change this
+- --git-path=ocw-baseline,deploy/bartr    ### todo - change this
 - --git-readonly
 - --sync-state=secret
 - --listen-metrics=:3031
@@ -27,7 +28,9 @@ args:
 
 ### Cluster Specific Files
 
+> These are the files generated during the ASB deployment lab
+
 - cluster specific `traefik` config
-  - /deploy/yourClusterName/ingress/traefik-config.yaml
+  - /deploy/bartr1/ingress/traefik-config.yaml
 - app specific `traefik` config
-  - /deploy/yourClusterName/ngsa/ngsa-ingress.yaml
+  - /deploy/bartr1/ngsa/ngsa-ingress.yaml
