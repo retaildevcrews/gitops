@@ -12,12 +12,12 @@ spec:
     metadata:
       labels:
         app: tinybench
-        version: beta-0407-0435
-        deploy: 21-04-07-04-35-15
+        version: beta-0515-0305
+        deploy: 21-05-15-03-05-26
     spec:
       containers:
         - name: app
-          image: ghcr.io/retaildevcrews/tinybench:beta
+          image: retaildevcrew/tinybench:beta
           imagePullPolicy: Always
 
           args: 
@@ -81,8 +81,8 @@ spec:
     metadata:
       labels:
         app: loderunner
-        version: beta-0407-0435
-        deploy: 21-04-07-04-35-15
+        version: beta-0515-0305
+        deploy: 21-05-15-03-05-26
     spec:
       containers:
         - name: app

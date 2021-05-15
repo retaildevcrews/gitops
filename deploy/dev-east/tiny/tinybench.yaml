@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinybench
+  namespace: tiny
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tinybench
+  template:
+    metadata:
+      labels:
+        app: tinybench
+        version: beta-0515-0305
+        deploy: 21-05-15-03-05-26
+    spec:
+      containers:
+        - name: app
+          image: retaildevcrew/tinybench:beta
+          imagePullPolicy: Always
+
+          args: 
+          - -p
+          - "8080"
+          - -u
+          - benchmark
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinybench
+  namespace: tiny
+  labels:
+    app: tinybench
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: tinybench
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tinybench-ingress
+  namespace: tiny
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: traefik-internal
+    # kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.options: default
+spec:
+  # ingressClassName: "traefik-internal"
+  tls:
+  - hosts:
+      - dev.aks-sb.com
+  rules:
+  - host: dev.aks-sb.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tinybench
+            port:
+              number: 8080
