@@ -163,19 +163,19 @@ data:
 
       - job_name: 'ngsa-memory-basea'
         static_configs:
-          - targets: [ 'https://basea.aks-sb.com/memory/metrics' ]
+          - targets: [ 'https://basea.aks-sb.com/memory' ]
           
       - job_name: 'ngsa-memory-newbasea'
         static_configs:
-          - targets: [ 'https://baseb.aks-sb.com/newmemory/metrics' ]
+          - targets: [ 'https://baseb.aks-sb.com/newmemory' ]
           
       - job_name: 'ngsa-memory-baseline'
         static_configs:
-          - targets: [ 'https://traefik2.aks-sb.com/memory/metrics' ]
+          - targets: [ 'https://traefik2.aks-sb.com/memory' ]
 
       - job_name: 'ngsa-memory-newbaseline'
         static_configs:
-          - targets: [ 'https://traefik2.aks-sb.com/newmemory/metrics' ]
+          - targets: [ 'https://traefik2.aks-sb.com/newmemory' ]
 
       - job_name: 'kubernetes-cadvisor'
 
