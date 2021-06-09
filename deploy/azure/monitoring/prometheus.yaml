@@ -162,18 +162,22 @@ data:
           - targets: [ 'loderunner.ngsa.svc.cluster.local:8080' ]
 
       - job_name: 'ngsa-memory-basea'
+        scheme: "https"
         static_configs:
           - targets: [ 'basea.aks-sb.com/memory' ]
           
       - job_name: 'ngsa-memory-newbasea'
+        scheme: "https"
         static_configs:
           - targets: [ 'baseb.aks-sb.com/newmemory' ]
           
       - job_name: 'ngsa-memory-baseline'
+        scheme: "https"
         static_configs:
           - targets: [ 'traefik2.aks-sb.com/memory' ]
 
       - job_name: 'ngsa-memory-newbaseline'
+        scheme: "https"
         static_configs:
           - targets: [ 'traefik2.aks-sb.com/newmemory' ]
 
