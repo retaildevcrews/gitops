@@ -163,23 +163,27 @@ data:
 
       - job_name: 'ngsa-memory-basea'
         scheme: "https"
+        metrics_path: "/memory/metrics"
         static_configs:
-          - targets: [ 'basea.aks-sb.com/memory' ]
+          - targets: [ 'basea.aks-sb.com' ]
           
       - job_name: 'ngsa-memory-newbasea'
         scheme: "https"
+        metrics_path: "/newmemory/metrics"
         static_configs:
-          - targets: [ 'baseb.aks-sb.com/newmemory' ]
+          - targets: [ 'baseb.aks-sb.com' ]
           
       - job_name: 'ngsa-memory-baseline'
         scheme: "https"
+        metrics_path: "/memory/metrics"
         static_configs:
-          - targets: [ 'traefik2.aks-sb.com/memory' ]
+          - targets: [ 'traefik2.aks-sb.com' ]
 
       - job_name: 'ngsa-memory-newbaseline'
         scheme: "https"
+        metrics_path: "/newmemory/metrics"
         static_configs:
-          - targets: [ 'traefik2.aks-sb.com/newmemory' ]
+          - targets: [ 'traefik2.aks-sb.com' ]
 
       - job_name: 'kubernetes-cadvisor'
 
