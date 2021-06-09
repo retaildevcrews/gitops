@@ -161,6 +161,22 @@ data:
         static_configs:
           - targets: [ 'loderunner.ngsa.svc.cluster.local:8080' ]
 
+      - job_name: 'ngsa-memory-basea'
+        static_configs:
+          - targets: [ 'https://basea.aks-sb.com/memory/metrics' ]
+          
+      - job_name: 'ngsa-memory-newbasea'
+        static_configs:
+          - targets: [ 'https://baseb.aks-sb.com/newmemory/metrics' ]
+          
+      - job_name: 'ngsa-memory-baseline'
+        static_configs:
+          - targets: [ 'https://traefik2.aks-sb.com/memory/metrics' ]
+
+      - job_name: 'ngsa-memory-newbaseline'
+        static_configs:
+          - targets: [ 'https://traefik2.aks-sb.com/newmemory/metrics' ]
+
       - job_name: 'kubernetes-cadvisor'
 
         scheme: https
