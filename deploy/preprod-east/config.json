@@ -1,0 +1,6 @@
+{
+    "zone": "az-east",
+    "region": "East",
+    "template": "ngsa-preprod.yaml"
+}
+
