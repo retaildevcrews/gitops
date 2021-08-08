@@ -14,8 +14,8 @@ spec:
     metadata:
       labels:
         app: ngsa-memory
-        version: beta-0804-1802
-        deploy: 21-08-04-18-02-50
+        version: beta-0808-0606
+        deploy: 21-08-08-06-06-32
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
